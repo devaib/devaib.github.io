@@ -14,9 +14,9 @@ author:
   url: #yoururl
 permalink: pretty
 
-baseurl: "devai.b"
+baseurl: ""
 
-highlighter: none
+highlighter: rouge
 
 exclude:
   - .jekyll-cache
