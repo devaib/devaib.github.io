@@ -1,13 +1,13 @@
-site: Sidey
+site: devai.b
 url: #yoururl
-title: Sidey
-description: Simple and minimalistic jekyll blogging theme.
+title: devai.b
+description: personal blog
 twitter:
-  username: #yourusername
+  username: Devaib
   card: summary
-  creator: #yourusername
+  creator: Devaib
 author:
-  twitter: #yourusername
+  twitter: Devaib
   name: #yourusername
   avatar:
   email: #youremail
