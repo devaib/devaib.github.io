@@ -2,6 +2,17 @@
   
     {
 
+      "title"    : "Photo Test",
+      "url"      : "/photo/test",
+      "category" : "",
+      "tags"     : "photography",
+      "date"     : "2020-10-19 00:00:00 -0400",
+      "description" : "Photo test."
+
+    } ,
+  
+    {
+
       "title"    : "Animation",
       "url"      : "/swiftui/animation",
       "category" : "",
