@@ -2,6 +2,17 @@
   
     {
 
+      "title"    : "iExpense",
+      "url"      : "/swiftui/iExpense",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-10-19 00:00:00 -0400",
+      "description" : "Bring in a second view with this expense tracking app"
+
+    } ,
+  
+    {
+
       "title"    : "Photo Test",
       "url"      : "/photo/test",
       "category" : "",
