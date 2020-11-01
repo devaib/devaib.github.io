@@ -27,9 +27,9 @@ permalink: "/swiftui/CupcakeCorner"
 9. The `CodingKey` protocol lets us list the properties we want to archive and unarchive as `enum` cases
 10. Structs cannot be used with `@ObservedObject`
 11. We should always change our user interface on the main thread
-12. It's common to use the shared property of URLSession rather than creating a new session ourselves
+12. It's common to use the shared property of `URLSession` rather than creating a new session ourselves
 13. If the properties already have default values, you don't need to include them in the initializer
-14. When a URLSession data task completes, it might send us data or an error, but not both
+14. When a `URLSession` data task completes, it might send us data or an error, but not both
 
 ### Code
 
