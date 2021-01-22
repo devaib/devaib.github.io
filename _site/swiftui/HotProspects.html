@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Jekyll v4.0.0" /><meta property="og:title" content="HotProspects" /><meta property="og:locale" content="en_US" /><meta name="description" content="Build an app for conferences with tabs, context menus, and more." /><meta property="og:description" content="Build an app for conferences with tabs, context menus, and more." /><link rel="canonical" href="http://localhost:4000/swiftui/HotProspects" /><meta property="og:url" content="http://localhost:4000/swiftui/HotProspects" /><meta property="og:site_name" content="devai.b" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2020-12-06T00:00:00-05:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="HotProspects" /><meta name="twitter:site" content="@Devaib" /><meta name="twitter:creator" content="@Devaib" /> <script type="application/ld+json"> {"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/swiftui/HotProspects"},"headline":"HotProspects","url":"http://localhost:4000/swiftui/HotProspects","description":"Build an app for conferences with tabs, context menus, and more.","dateModified":"2020-12-06T00:00:00-05:00","datePublished":"2020-12-06T00:00:00-05:00","@context":"https://schema.org"}</script><title> HotProspects - devai.b</title><link rel="shortcut icon" href="/favicon.png"><link rel="alternate" type="application/atom+xml" title="devai.b" href="/atom.xml"><link rel="alternate" type="application/json" title="devai.b" href="http://localhost:4000/feed.json" /><link rel="sitemap" type="application/xml" title="sitemap" href="/sitemap.xml" /><style> *,:after,:before{box-sizing:border-box;background-color:inherit;color:inherit;margin:0;padding:0}body{font-family:system-ui, sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;font-size:1rem;color:#16171a}nav ul{border-right:1px solid #edf2f7}a{color:#000;text-decoration-skip-ink:auto;text-decoration:underline}pre{margin:.5rem 0;padding:.5rem}.post p{margin:.5rem 0}.post h1,.post h2,.post h3,.post h4{margin:1rem 0}.post h2:first-child,.project h2:first-child,.photo h2:first-child{margin-top:0}.meta{margin:2rem 0}code,pre{background:#ecedee}code{padding:.1rem}pre code{border:none}pre{padding:1rem;overflow-x:auto}img{max-width:100%}hr{background:#000;height:1px;border:0}header{flex-basis:10rem;flex-grow:1;position:relative}header a{text-decoration:none}header li{margin-bottom:.2rem;text-align:right;margin-right:2rem}header a.active{font-weight:bold}header,section{padding:1rem}blockquote{font-style:italic;border-left:5px solid #ececec;padding-left:1rem}h1,h2,h3,h4,h5{line-height:1;margin:1rem 0;font-weight:600}section h1:first-child{margin-top:0}strong,b{font-weight:bold}.photos ul{list-style:none}.photos li{margin-bottom:1.5rem}.photo picture,.project picture{margin-bottom:0.5rem}.posts ul,header ul{list-style:none}.posts li{align-items:center;display:flex;justify-content:space-between;margin-bottom:.5rem}.posts li a,.posts li div,.projects li a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}.posts li time,.projects li time{padding-left:1rem;white-space:nowrap;font-variant-numeric:tabular-nums}main{display:flex;flex-wrap:wrap;max-width:60rem;margin:2rem auto;padding:1rem}@media screen and (max-width: 45rem){header li{display:inline;margin-right:1rem}.logo{padding-bottom:1rem}header ul{border-bottom:1px solid #edf2f7;padding-bottom:2rem}nav ul{border-right:0px}.photos ul{margin-top:0.5rem}}section{flex-basis:0;flex-grow:999;min-width:70%;display:flex;flex-direction:column}figcaption{font-size:smaller}</style></head><body><main role="main"><header role="banner"> <!--<h1 class="logo">devai.b</h1>--><nav role="navigation"><ul><li><a href="/" >Writing</a></li><li><a href="/about" >About</a></li><li><a href="/search" >Search</a></li><li><a href="/atom.xml" >Rss</a></li></ul></nav></header><section class="post"><h2>HotProspects</h2><h3 id="keywords">Keywords</h3><ul><li>tabview</li><li>Result</li><li>objectWillChange</li><li>QR code</li><li>notification</li><li>package import</li><li>context view</li><li>image interpolation</li><li>fileprivate</li><li>UserDefaults</li><li>encapsulation</li></ul><h3 id="keynotes">Keynotes</h3><ol><li><p>It’s common to use <code class="highlighter-rouge">NavigationView</code> and <code class="highlighter-rouge">TabView</code> at the same time. And <code class="highlighter-rouge">TabView</code> should be the parent view, with the tabs inside it having a <code class="highlighter-rouge">NavigationView</code> as necessary, not the other way around.</p></li><li><p>Ask user for permission to user the camera:</p></li></ol><ul><li>Open info.plist</li><li>Right-click in some space and select Add Row</li><li>Select “Privacy - Camera Usage Description” for the key</li><li>For the value enter “We need to scan QR codes”</li></ul><ol><li><p>Properties wrapped in <code class="highlighter-rouge">@EnvironmentObject</code> must have a value before the view is shown</p></li><li><p><code class="highlighter-rouge">@EnvironmentObject</code> properties must conform to <code class="highlighter-rouge">ObservableObject</code>. They use exactly the same protocol, which means <code class="highlighter-rouge">@Published</code> and more works</p></li><li><p>We can add one image and one text view to each tab bar item</p></li><li><p>swiftUI enables high-quality interpolation by default. We can control interpolation using the interpolation modifier</p></li></ol><h3 id="codes">Codes</h3><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Result Type example</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">enum</span> <span class="kt">NetworkError</span><span class="p">:</span> <span class="kt">Error</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="n">badURL</span><span class="p">,</span> <span class="n">requestFailed</span><span class="p">,</span> <span class="n">unknown</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">fetchData</span><span class="p">(</span><span class="n">from</span> <span class="nv">urlString</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">NetworkError</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="n">urlString</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nf">completion</span><span class="p">(</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="o">.</span><span class="n">badURL</span><span class="p">))</span>
+        <span class="k">return</span>
+    <span class="p">}</span>
+    
+    <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span> <span class="p">{</span> <span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="n">data</span> <span class="p">{</span>
+                <span class="k">let</span> <span class="nv">stringData</span> <span class="o">=</span> <span class="kt">String</span><span class="p">(</span><span class="nv">decoding</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span> <span class="nv">as</span><span class="p">:</span> <span class="kt">UTF8</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+                <span class="nf">completion</span><span class="p">(</span><span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="n">stringData</span><span class="p">))</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="n">error</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+                <span class="nf">completion</span><span class="p">(</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="o">.</span><span class="n">requestFailed</span><span class="p">))</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">completion</span><span class="p">(</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="o">.</span><span class="n">unknown</span><span class="p">))</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">selectedTab</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">Text</span><span class="p">(</span><span class="s">"Hello, World!"</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">onAppear</span> <span class="p">{</span>
+                <span class="nf">fetchData</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"https://www.apple.com"</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+                    <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+                    <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">str</span><span class="p">):</span>
+                        <span class="nf">print</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+                    <span class="k">case</span> <span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+                        <span class="k">switch</span> <span class="n">error</span> <span class="p">{</span>
+                        <span class="k">case</span> <span class="o">.</span><span class="nv">badURL</span><span class="p">:</span>
+                            <span class="nf">print</span><span class="p">(</span><span class="s">"Bad URL"</span><span class="p">)</span>
+                        <span class="k">case</span> <span class="o">.</span><span class="nv">requestFailed</span><span class="p">:</span>
+                            <span class="nf">print</span><span class="p">(</span><span class="s">"Network problems"</span><span class="p">)</span>
+                        <span class="k">case</span> <span class="o">.</span><span class="nv">unknown</span><span class="p">:</span>
+                            <span class="nf">print</span><span class="p">(</span><span class="s">"Unknown issue"</span><span class="p">)</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">})</span>
+            <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  ContentView.swift</span>
+<span class="c1">//  HotProspects</span>
+<span class="c1">//</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">prospects</span> <span class="o">=</span> <span class="kt">Prospects</span><span class="p">()</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">TabView</span> <span class="p">{</span>
+            <span class="kt">ProspectsView</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="o">.</span><span class="k">none</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">tabItem</span> <span class="p">{</span>
+                    <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"person.3"</span><span class="p">)</span>
+                    <span class="kt">Text</span><span class="p">(</span><span class="s">"Everyone"</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="kt">ProspectsView</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="o">.</span><span class="n">contacted</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">tabItem</span> <span class="p">{</span>
+                    <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"checkmark.circle"</span><span class="p">)</span>
+                    <span class="kt">Text</span><span class="p">(</span><span class="s">"Contacted"</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="kt">ProspectsView</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="o">.</span><span class="n">uncontacted</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">tabItem</span> <span class="p">{</span>
+                    <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"questionmark.diamond"</span><span class="p">)</span>
+                    <span class="kt">Text</span><span class="p">(</span><span class="s">"Uncontacted"</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="kt">MeView</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">tabItem</span> <span class="p">{</span>
+                    <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"person.crop.square"</span><span class="p">)</span>
+                    <span class="kt">Text</span><span class="p">(</span><span class="s">"Me"</span><span class="p">)</span>
+                <span class="p">}</span>
+            
+        <span class="p">}</span>
+        <span class="o">.</span><span class="nf">environmentObject</span><span class="p">(</span><span class="n">prospects</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">ContentView</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  ProspectsView.swift</span>
+<span class="c1">//  HotProspects</span>
+<span class="c1">//</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">import</span> <span class="kt">CodeScanner</span>
+<span class="kd">import</span> <span class="kt">UserNotifications</span>
+
+<span class="kd">struct</span> <span class="kt">ProspectsView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">enum</span> <span class="kt">FilterType</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="k">none</span><span class="p">,</span> <span class="n">contacted</span><span class="p">,</span> <span class="n">uncontacted</span>
+    <span class="p">}</span>
+    <span class="k">let</span> <span class="nv">filter</span><span class="p">:</span> <span class="kt">FilterType</span>
+    <span class="k">var</span> <span class="nv">filteredProspects</span><span class="p">:</span> <span class="p">[</span><span class="kt">Prospect</span><span class="p">]</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="n">filter</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">none</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prospects</span><span class="o">.</span><span class="n">people</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">contacted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prospects</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">filter</span> <span class="p">{</span> <span class="nv">$0</span><span class="o">.</span><span class="n">isContacted</span> <span class="p">}</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">uncontacted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">prospects</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="nf">filter</span><span class="p">({</span> <span class="o">!</span><span class="nv">$0</span><span class="o">.</span><span class="n">isContacted</span> <span class="p">})</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="n">filter</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">none</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Everyone"</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">contacted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Contacted people"</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">uncontacted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">"Uncontacted people"</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kd">@EnvironmentObject</span> <span class="k">var</span> <span class="nv">prospects</span><span class="p">:</span> <span class="kt">Prospects</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">isShowingScanner</span> <span class="o">=</span> <span class="kc">false</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span> <span class="p">{</span>
+            <span class="kt">List</span> <span class="p">{</span>
+                <span class="kt">ForEach</span><span class="p">(</span><span class="n">filteredProspects</span><span class="p">)</span> <span class="p">{</span> <span class="n">prospect</span> <span class="k">in</span>
+                    <span class="kt">VStack</span><span class="p">(</span><span class="nv">alignment</span><span class="p">:</span> <span class="o">.</span><span class="n">leading</span><span class="p">,</span> <span class="nv">spacing</span><span class="p">:</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="kt">Text</span><span class="p">(</span><span class="n">prospect</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                            <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">headline</span><span class="p">)</span>
+                        <span class="kt">Text</span><span class="p">(</span><span class="n">prospect</span><span class="o">.</span><span class="n">emailAddress</span><span class="p">)</span>
+                            <span class="o">.</span><span class="nf">foregroundColor</span><span class="p">(</span><span class="o">.</span><span class="n">secondary</span><span class="p">)</span>
+                    <span class="p">})</span>
+                    <span class="o">.</span><span class="n">contextMenu</span> <span class="p">{</span>
+                        <span class="kt">Button</span><span class="p">(</span><span class="n">prospect</span><span class="o">.</span><span class="n">isContacted</span> <span class="p">?</span> <span class="s">"Mark Uncontacted"</span> <span class="p">:</span> <span class="s">"Mark Contacted"</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="k">self</span><span class="o">.</span><span class="n">prospects</span><span class="o">.</span><span class="nf">toggle</span><span class="p">(</span><span class="n">prospect</span><span class="p">)</span>
+                        <span class="p">}</span>
+                        <span class="k">if</span> <span class="o">!</span><span class="n">prospect</span><span class="o">.</span><span class="n">isContacted</span> <span class="p">{</span>
+                            <span class="kt">Button</span><span class="p">(</span><span class="s">"Remind Me"</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="k">self</span><span class="o">.</span><span class="nf">addNotification</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">prospect</span><span class="p">)</span>
+                            <span class="p">}</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">navigationBarItems</span><span class="p">(</span><span class="nv">trailing</span><span class="p">:</span> <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="p">{</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">isShowingScanner</span> <span class="o">=</span> <span class="kc">true</span>
+            <span class="p">})</span> <span class="p">{</span>
+                <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"qrcode.viewfinder"</span><span class="p">)</span>
+                <span class="kt">Text</span><span class="p">(</span><span class="s">"Scan"</span><span class="p">)</span>
+            <span class="p">})</span>
+            <span class="o">.</span><span class="nf">sheet</span><span class="p">(</span><span class="nv">isPresented</span><span class="p">:</span> <span class="err">$</span><span class="n">isShowingScanner</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+                <span class="kt">CodeScannerView</span><span class="p">(</span><span class="nv">codeTypes</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="n">qr</span><span class="p">],</span> <span class="nv">simulatedData</span><span class="p">:</span> <span class="s">"Paul Hudson</span><span class="se">\n</span><span class="s">paul@hackingwithswift.com"</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">handleScan</span><span class="p">)</span>
+            <span class="p">})</span>
+            
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">handleScan</span><span class="p">(</span><span class="nv">result</span><span class="p">:</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt">String</span><span class="p">,</span> <span class="kt">CodeScannerView</span><span class="o">.</span><span class="kt">ScanError</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">isShowingScanner</span> <span class="o">=</span> <span class="kc">false</span>
+        
+        <span class="k">switch</span> <span class="n">result</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">success</span><span class="p">(</span><span class="k">let</span> <span class="nv">code</span><span class="p">):</span>
+            <span class="k">let</span> <span class="nv">details</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="nf">components</span><span class="p">(</span><span class="nv">separatedBy</span><span class="p">:</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+            <span class="k">guard</span> <span class="n">details</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+            
+            <span class="k">let</span> <span class="nv">person</span> <span class="o">=</span> <span class="kt">Prospect</span><span class="p">()</span>
+            <span class="n">person</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">person</span><span class="o">.</span><span class="n">emailAddress</span> <span class="o">=</span> <span class="n">details</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            
+            <span class="k">self</span><span class="o">.</span><span class="n">prospects</span><span class="o">.</span><span class="nf">add</span><span class="p">(</span><span class="n">person</span><span class="p">)</span>
+            
+        <span class="k">case</span><span class="o">.</span><span class="nf">failure</span><span class="p">(</span><span class="k">let</span> <span class="nv">error</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="s">"Scanning failed"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">addNotification</span><span class="p">(</span><span class="k">for</span> <span class="nv">prospect</span><span class="p">:</span> <span class="kt">Prospect</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">center</span> <span class="o">=</span> <span class="kt">UNUserNotificationCenter</span><span class="o">.</span><span class="nf">current</span><span class="p">()</span>
+
+        <span class="k">let</span> <span class="nv">addRequest</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="nv">content</span> <span class="o">=</span> <span class="kt">UNMutableNotificationContent</span><span class="p">()</span>
+            <span class="n">content</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Contact </span><span class="se">\(</span><span class="n">prospect</span><span class="o">.</span><span class="n">name</span><span class="se">)</span><span class="s">"</span>
+            <span class="n">content</span><span class="o">.</span><span class="n">subtitle</span> <span class="o">=</span> <span class="n">prospect</span><span class="o">.</span><span class="n">emailAddress</span>
+            <span class="n">content</span><span class="o">.</span><span class="n">sound</span> <span class="o">=</span> <span class="kt">UNNotificationSound</span><span class="o">.</span><span class="k">default</span>
+
+            <span class="k">var</span> <span class="nv">dateComponents</span> <span class="o">=</span> <span class="kt">DateComponents</span><span class="p">()</span>
+            <span class="n">dateComponents</span><span class="o">.</span><span class="n">hour</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="c1">//            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)</span>
+            <span class="k">let</span> <span class="nv">trigger</span> <span class="o">=</span> <span class="kt">UNTimeIntervalNotificationTrigger</span><span class="p">(</span><span class="nv">timeInterval</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">repeats</span><span class="p">:</span> <span class="kc">false</span><span class="p">)</span>
+
+            <span class="k">let</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">UNNotificationRequest</span><span class="p">(</span><span class="nv">identifier</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">()</span><span class="o">.</span><span class="n">uuidString</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="n">content</span><span class="p">,</span> <span class="nv">trigger</span><span class="p">:</span> <span class="n">trigger</span><span class="p">)</span>
+            <span class="n">center</span><span class="o">.</span><span class="nf">add</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">center</span><span class="o">.</span><span class="n">getNotificationSettings</span> <span class="p">{</span> <span class="n">settings</span> <span class="k">in</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">authorizationStatus</span> <span class="o">==</span> <span class="o">.</span><span class="n">authorized</span> <span class="p">{</span>
+                <span class="nf">addRequest</span><span class="p">()</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">center</span><span class="o">.</span><span class="nf">requestAuthorization</span><span class="p">(</span><span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="n">alert</span><span class="p">,</span> <span class="o">.</span><span class="n">badge</span><span class="p">,</span> <span class="o">.</span><span class="n">sound</span><span class="p">])</span> <span class="p">{</span> <span class="n">success</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+                    <span class="k">if</span> <span class="n">success</span> <span class="p">{</span>
+                        <span class="nf">addRequest</span><span class="p">()</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nf">print</span><span class="p">(</span><span class="s">"D'oh"</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ProspectsView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">ProspectsView</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="o">.</span><span class="k">none</span><span class="p">)</span><span class="o">.</span><span class="nf">environmentObject</span><span class="p">(</span><span class="kt">Prospects</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  MeView.swift</span>
+<span class="c1">//  HotProspects</span>
+<span class="c1">//</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">import</span> <span class="kt">CoreImage</span><span class="o">.</span><span class="kt">CIFilterBuiltins</span>
+
+<span class="kd">struct</span> <span class="kt">MeView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">name</span> <span class="o">=</span> <span class="s">"Anonymous"</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">emailAddress</span> <span class="o">=</span> <span class="s">"you@yoursite.com"</span>
+    
+    <span class="k">let</span> <span class="nv">context</span> <span class="o">=</span> <span class="kt">CIContext</span><span class="p">()</span>
+    <span class="k">let</span> <span class="nv">filter</span> <span class="o">=</span> <span class="kt">CIFilter</span><span class="o">.</span><span class="nf">qrCodeGenerator</span><span class="p">()</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span> <span class="p">{</span>
+            <span class="kt">VStack</span> <span class="p">{</span>
+                <span class="kt">TextField</span><span class="p">(</span><span class="s">"Name"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">name</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">textContentType</span><span class="p">(</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">padding</span><span class="p">(</span><span class="o">.</span><span class="n">horizontal</span><span class="p">)</span>
+
+                <span class="kt">TextField</span><span class="p">(</span><span class="s">"Email address"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">emailAddress</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">textContentType</span><span class="p">(</span><span class="o">.</span><span class="n">emailAddress</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">padding</span><span class="p">([</span><span class="o">.</span><span class="n">horizontal</span><span class="p">,</span> <span class="o">.</span><span class="n">bottom</span><span class="p">])</span>
+                
+                <span class="kt">Image</span><span class="p">(</span><span class="nv">uiImage</span><span class="p">:</span> <span class="nf">generateQRCode</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="s">"</span><span class="se">\(</span><span class="n">name</span><span class="se">)\n\(</span><span class="n">emailAddress</span><span class="se">)</span><span class="s">"</span><span class="p">))</span>
+                    <span class="o">.</span><span class="nf">interpolation</span><span class="p">(</span><span class="o">.</span><span class="k">none</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">resizable</span><span class="p">()</span>
+                    <span class="o">.</span><span class="nf">scaledToFit</span><span class="p">()</span>
+                    <span class="o">.</span><span class="nf">frame</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="nv">height</span><span class="p">:</span> <span class="mi">200</span><span class="p">)</span>
+
+                <span class="kt">Spacer</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="s">"Your code"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">generateQRCode</span><span class="p">(</span><span class="n">from</span> <span class="nv">string</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIImage</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="kt">Data</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">utf8</span><span class="p">)</span>
+        <span class="n">filter</span><span class="o">.</span><span class="nf">setValue</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="s">"inputMessage"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">outputImage</span> <span class="o">=</span> <span class="n">filter</span><span class="o">.</span><span class="n">outputImage</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">cgimg</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="nf">createCGImage</span><span class="p">(</span><span class="n">outputImage</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">outputImage</span><span class="o">.</span><span class="n">extent</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">cgImage</span><span class="p">:</span> <span class="n">cgimg</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="kt">UIImage</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"xmark.circle"</span><span class="p">)</span> <span class="p">??</span> <span class="kt">UIImage</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">MeView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">MeView</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  Prospect.swift</span>
+<span class="c1">//  HotProspects</span>
+<span class="c1">//</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">class</span> <span class="kt">Prospect</span><span class="p">:</span> <span class="kt">Identifiable</span><span class="p">,</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">id</span> <span class="o">=</span> <span class="kt">UUID</span><span class="p">()</span>
+    <span class="k">var</span> <span class="nv">name</span> <span class="o">=</span> <span class="s">"Anonymous"</span>
+    <span class="k">var</span> <span class="nv">emailAddress</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">isContacted</span> <span class="o">=</span> <span class="kc">false</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="kt">Prospects</span><span class="p">:</span> <span class="kt">ObservableObject</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">saveKey</span> <span class="o">=</span> <span class="s">"SavedData"</span>
+    
+    <span class="kd">@Published</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">people</span><span class="p">:</span> <span class="p">[</span><span class="kt">Prospect</span><span class="p">]</span>
+    
+    <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="kt">UserDefaults</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">forKey</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="n">saveKey</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">decoded</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="kt">JSONDecoder</span><span class="p">()</span><span class="o">.</span><span class="nf">decode</span><span class="p">([</span><span class="kt">Prospect</span><span class="p">]</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">people</span> <span class="o">=</span> <span class="n">decoded</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">self</span><span class="o">.</span><span class="n">people</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="p">}</span>
+    
+    <span class="kd">private</span> <span class="kd">func</span> <span class="nf">save</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="k">let</span> <span class="nv">encoded</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="kt">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">people</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">UserDefaults</span><span class="o">.</span><span class="n">standard</span><span class="o">.</span><span class="nf">setValue</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="k">Self</span><span class="o">.</span><span class="n">saveKey</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="n">_</span> <span class="nv">prospect</span><span class="p">:</span> <span class="kt">Prospect</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">people</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">prospect</span><span class="p">)</span>
+        <span class="nf">save</span><span class="p">()</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">toggle</span><span class="p">(</span><span class="n">_</span> <span class="nv">prospect</span><span class="p">:</span> <span class="kt">Prospect</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">objectWillChange</span><span class="o">.</span><span class="nf">send</span><span class="p">()</span>
+        <span class="n">prospect</span><span class="o">.</span><span class="n">isContacted</span><span class="o">.</span><span class="nf">toggle</span><span class="p">()</span>
+        <span class="nf">save</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><span class="meta"><time datetime="2020-12-06T00:00:00-05:00">December 6, 2020</time> &middot; <a href="/tag/swiftui">swiftui</a>, <a href="/tag/hackingwithswift">hackingwithswift</a></span></section></main></body></html>

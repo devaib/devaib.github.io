@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Jekyll v4.0.0" /><meta property="og:title" content="Bookworm" /><meta property="og:locale" content="en_US" /><meta name="description" content="Use Core Data to build an app that tracks books you like" /><meta property="og:description" content="Use Core Data to build an app that tracks books you like" /><link rel="canonical" href="http://localhost:4000/swiftui/Bookworm" /><meta property="og:url" content="http://localhost:4000/swiftui/Bookworm" /><meta property="og:site_name" content="devai.b" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2020-11-02T00:00:00-05:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Bookworm" /><meta name="twitter:site" content="@Devaib" /><meta name="twitter:creator" content="@Devaib" /> <script type="application/ld+json"> {"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/swiftui/Bookworm"},"headline":"Bookworm","url":"http://localhost:4000/swiftui/Bookworm","description":"Use Core Data to build an app that tracks books you like","dateModified":"2020-11-02T00:00:00-05:00","datePublished":"2020-11-02T00:00:00-05:00","@context":"https://schema.org"}</script><title> Bookworm - devai.b</title><link rel="shortcut icon" href="/favicon.png"><link rel="alternate" type="application/atom+xml" title="devai.b" href="/atom.xml"><link rel="alternate" type="application/json" title="devai.b" href="http://localhost:4000/feed.json" /><link rel="sitemap" type="application/xml" title="sitemap" href="/sitemap.xml" /><style> *,:after,:before{box-sizing:border-box;background-color:inherit;color:inherit;margin:0;padding:0}body{font-family:system-ui, sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;font-size:1rem;color:#16171a}nav ul{border-right:1px solid #edf2f7}a{color:#000;text-decoration-skip-ink:auto;text-decoration:underline}pre{margin:.5rem 0;padding:.5rem}.post p{margin:.5rem 0}.post h1,.post h2,.post h3,.post h4{margin:1rem 0}.post h2:first-child,.project h2:first-child,.photo h2:first-child{margin-top:0}.meta{margin:2rem 0}code,pre{background:#ecedee}code{padding:.1rem}pre code{border:none}pre{padding:1rem;overflow-x:auto}img{max-width:100%}hr{background:#000;height:1px;border:0}header{flex-basis:10rem;flex-grow:1;position:relative}header a{text-decoration:none}header li{margin-bottom:.2rem;text-align:right;margin-right:2rem}header a.active{font-weight:bold}header,section{padding:1rem}blockquote{font-style:italic;border-left:5px solid #ececec;padding-left:1rem}h1,h2,h3,h4,h5{line-height:1;margin:1rem 0;font-weight:600}section h1:first-child{margin-top:0}strong,b{font-weight:bold}.photos ul{list-style:none}.photos li{margin-bottom:1.5rem}.photo picture,.project picture{margin-bottom:0.5rem}.posts ul,header ul{list-style:none}.posts li{align-items:center;display:flex;justify-content:space-between;margin-bottom:.5rem}.posts li a,.posts li div,.projects li a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}.posts li time,.projects li time{padding-left:1rem;white-space:nowrap;font-variant-numeric:tabular-nums}main{display:flex;flex-wrap:wrap;max-width:60rem;margin:2rem auto;padding:1rem}@media screen and (max-width: 45rem){header li{display:inline;margin-right:1rem}.logo{padding-bottom:1rem}header ul{border-bottom:1px solid #edf2f7;padding-bottom:2rem}nav ul{border-right:0px}.photos ul{margin-top:0.5rem}}section{flex-basis:0;flex-grow:999;min-width:70%;display:flex;flex-direction:column}figcaption{font-size:smaller}</style></head><body><main role="main"><header role="banner"> <!--<h1 class="logo">devai.b</h1>--><nav role="navigation"><ul><li><a href="/" >Writing</a></li><li><a href="/about" >About</a></li><li><a href="/search" >Search</a></li><li><a href="/atom.xml" >Rss</a></li></ul></nav></header><section class="post"><h2>Bookworm</h2><h3 id="corrections">Corrections</h3><blockquote><p>Now think about sheets… does that mean the presented view can call the original its ancestor? SwiftUI has an answer, and it’s “no”…</p></blockquote><p>This above statement from <a href="https://www.hackingwithswift.com/books/ios-swiftui/creating-books-with-core-data">here</a> is no longer correct. <code class="highlighter-rouge">Sheets</code> now inherit the environment from their parent views, which can be confirmed at <a href="https://oleb.net/2020/sheet-environment/">here</a>:</p><blockquote><p>Feb 4, 2020 - Luca Bernardi from the SwiftUI team confirmed that this is not the intended behavior.</p><p>Aug 5, 2020 - This behavior has been fixed in the iOS 14.0/macOS 11.0 SDKs. Sheets now do inherit their environment.</p><p>This behavior has been fixed. As of Xcode 12.0 (the iOS 14.0/macOS 11.0 SDKs), sheets do inherit their environment.</p></blockquote><p>Thus the following codes can be changed from</p><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="nf">sheet</span><span class="p">(</span><span class="nv">isPresented</span><span class="p">:</span> <span class="err">$</span><span class="n">showingAddScreen</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+    <span class="kt">AddBookView</span><span class="p">()</span><span class="o">.</span><span class="nf">environment</span><span class="p">(\</span><span class="o">.</span><span class="n">managedObjectContext</span><span class="p">,</span> <span class="k">self</span><span class="o">.</span><span class="n">moc</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div><p>to</p><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="nf">sheet</span><span class="p">(</span><span class="nv">isPresented</span><span class="p">:</span> <span class="err">$</span><span class="n">showingAddScreen</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+    <span class="kt">AddBookView</span><span class="p">()</span>
+<span class="p">})</span>
+</code></pre></div></div><p>in <code class="highlighter-rouge">ContentView.swift</code>.</p><h3 id="keywords">Keywords</h3><ul><li>CoreData</li><li>@Binding</li><li>Environment</li><li>Sheet</li><li>Custom component, e.g., EmojiRatingView</li></ul><h3 id="keynotes">Keynotes</h3><ol><li><code class="highlighter-rouge">@Binding</code> lets us share one value in two places and it’s mainly used for creating custom UI components. It also works great with private properties</li><li>We can pop a view from a <code class="highlighter-rouge">NavigationView</code> using the same presentation mode dismiss code we use for sheets. Popping a view (from stack) is the equivalent of tapping Back or swiping from the left edge</li><li>Images from SF Symbols can be shown larger or small by using the font() modifier. SF Symbols automatically adapts to the text around it, so you can render them as large or small as you need</li><li>Type erasure (<code class="highlighter-rouge">Anyview</code>) lets us hide the underlying type of an object. <code class="highlighter-rouge">AnyView</code> conforms to View</li><li>There are two size classes: regular and compact</li><li>We must attach onDelete(perform:) to a ForEach view instead</li><li>We can create a testing managed object context for the purpose of SwiftUI previews. All we need to do is provide a concurrency type, such as main queue concurrency</li><li>A Core Data entity is akin to a class or struct in Swift. And Core Data has effectively no limit on the number of objects we store</li><li>Constant bindings cannot have their value changed by the user, e.g., <code class="highlighter-rouge">Toggle(isOn: .constant(true))</code></li></ol><h3 id="code">Code</h3><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  ContentView.swift</span>
+<span class="c1">//  Bookworm</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">import</span> <span class="kt">CoreData</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">managedObjectContext</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">moc</span>
+    <span class="kd">@FetchRequest</span><span class="p">(</span><span class="nv">entity</span><span class="p">:</span> <span class="kt">Book</span><span class="o">.</span><span class="nf">entity</span><span class="p">(),</span> <span class="nv">sortDescriptors</span><span class="p">:</span> <span class="p">[</span>
+        <span class="kt">NSSortDescriptor</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="p">\</span><span class="kt">Book</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="nv">ascending</span><span class="p">:</span> <span class="kc">true</span><span class="p">),</span>
+        <span class="kt">NSSortDescriptor</span><span class="p">(</span><span class="nv">keyPath</span><span class="p">:</span> <span class="p">\</span><span class="kt">Book</span><span class="o">.</span><span class="n">author</span><span class="p">,</span> <span class="nv">ascending</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="kd">private</span> <span class="k">var</span> <span class="nv">books</span><span class="p">:</span> <span class="kt">FetchedResults</span><span class="o">&lt;</span><span class="kt">Book</span><span class="o">&gt;</span>
+    
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">showingAddScreen</span> <span class="o">=</span> <span class="kc">false</span>
+
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span> <span class="p">{</span>
+            <span class="kt">List</span> <span class="p">{</span>
+                <span class="kt">ForEach</span><span class="p">(</span><span class="n">books</span><span class="p">,</span> <span class="nv">id</span><span class="p">:</span> <span class="p">\</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="n">book</span> <span class="k">in</span>
+                    <span class="kt">NavigationLink</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">DetailView</span><span class="p">(</span><span class="nv">book</span><span class="p">:</span> <span class="n">book</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="kt">EmojiRatingView</span><span class="p">(</span><span class="nv">rating</span><span class="p">:</span> <span class="n">book</span><span class="o">.</span><span class="n">rating</span><span class="p">)</span>
+                            <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">largeTitle</span><span class="p">)</span>
+                    
+                        <span class="kt">VStack</span><span class="p">(</span><span class="nv">alignment</span><span class="p">:</span> <span class="o">.</span><span class="n">leading</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="kt">Text</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">title</span> <span class="p">??</span> <span class="s">"Unknown Title"</span><span class="p">)</span>
+                                <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">headline</span><span class="p">)</span>
+                            <span class="kt">Text</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">author</span> <span class="p">??</span> <span class="s">"Unknown Author"</span><span class="p">)</span>
+                                <span class="o">.</span><span class="nf">foregroundColor</span><span class="p">(</span><span class="o">.</span><span class="n">secondary</span><span class="p">)</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="o">.</span><span class="nf">onDelete</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="p">{</span> <span class="n">indexSet</span> <span class="k">in</span>
+                    <span class="nf">deleteBooks</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="n">indexSet</span><span class="p">)</span>
+                <span class="p">})</span>
+            <span class="p">}</span>
+            <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="s">"Bookworm"</span><span class="p">)</span>
+            <span class="o">.</span><span class="nf">navigationBarItems</span><span class="p">(</span><span class="nv">leading</span><span class="p">:</span> <span class="kt">EditButton</span><span class="p">(),</span> <span class="nv">trailing</span><span class="p">:</span> <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="p">{</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">showingAddScreen</span><span class="o">.</span><span class="nf">toggle</span><span class="p">()</span>
+            <span class="p">})</span> <span class="p">{</span>
+                <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"plus"</span><span class="p">)</span>
+            <span class="p">})</span>
+            <span class="o">.</span><span class="nf">sheet</span><span class="p">(</span><span class="nv">isPresented</span><span class="p">:</span> <span class="err">$</span><span class="n">showingAddScreen</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+                <span class="kt">AddBookView</span><span class="p">()</span> <span class="c1">// .environment(\.managedObjectContext, self.moc)</span>
+            <span class="p">})</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">deleteBooks</span><span class="p">(</span><span class="n">at</span> <span class="nv">offsets</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="n">offset</span> <span class="k">in</span> <span class="n">offsets</span> <span class="p">{</span>
+            <span class="k">let</span> <span class="nv">book</span> <span class="o">=</span> <span class="n">books</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+            
+            <span class="n">moc</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+        <span class="p">}</span>
+        
+        <span class="k">try</span><span class="p">?</span> <span class="n">moc</span><span class="o">.</span><span class="nf">save</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">ContentView</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  AddBookView.swift</span>
+<span class="c1">//  Bookworm</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">AddBookView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">managedObjectContext</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">moc</span>
+    <span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">presentationMode</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presentationMode</span>
+    
+    <span class="k">let</span> <span class="nv">genres</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Fantasy"</span><span class="p">,</span> <span class="s">"Horror"</span><span class="p">,</span> <span class="s">"Kids"</span><span class="p">,</span> <span class="s">"Mystery"</span><span class="p">,</span> <span class="s">"Poetry"</span><span class="p">,</span> <span class="s">"Romance"</span><span class="p">,</span> <span class="s">"Thriller"</span><span class="p">]</span>
+    
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">title</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">author</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">rating</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">genre</span> <span class="o">=</span> <span class="s">"Fantasy"</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">review</span> <span class="o">=</span> <span class="s">""</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span> <span class="p">{</span>
+            <span class="kt">Form</span> <span class="p">{</span>
+                <span class="kt">Section</span> <span class="p">{</span>
+                    <span class="kt">TextField</span><span class="p">(</span><span class="s">"Name of book"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">title</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">disableAutocorrection</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+                    <span class="kt">TextField</span><span class="p">(</span><span class="s">"Author's name"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">author</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">disableAutocorrection</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+                    
+                    <span class="kt">Picker</span><span class="p">(</span><span class="s">"Genre"</span><span class="p">,</span> <span class="nv">selection</span><span class="p">:</span> <span class="err">$</span><span class="n">genre</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kt">ForEach</span><span class="p">(</span><span class="n">genres</span><span class="p">,</span> <span class="nv">id</span><span class="p">:</span> <span class="p">\</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="kt">Text</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                
+                <span class="kt">Section</span><span class="p">(</span><span class="nv">header</span><span class="p">:</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Rating"</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="kt">RatingView</span><span class="p">(</span><span class="nv">rating</span><span class="p">:</span> <span class="err">$</span><span class="n">rating</span><span class="p">)</span>
+                <span class="p">}</span>
+                
+                <span class="kt">Section</span><span class="p">(</span><span class="nv">header</span><span class="p">:</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Review"</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="kt">TextEditor</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">review</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">disableAutocorrection</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+                <span class="p">}</span>
+                
+                <span class="kt">Section</span> <span class="p">{</span>
+                    <span class="kt">Button</span><span class="p">(</span><span class="s">"Save"</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">let</span> <span class="nv">newBook</span> <span class="o">=</span> <span class="kt">Book</span><span class="p">(</span><span class="nv">context</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">moc</span><span class="p">)</span>
+                        <span class="n">newBook</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">title</span>
+                        <span class="n">newBook</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">author</span>
+                        <span class="n">newBook</span><span class="o">.</span><span class="n">rating</span> <span class="o">=</span> <span class="kt">Int16</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">rating</span><span class="p">)</span>
+                        <span class="n">newBook</span><span class="o">.</span><span class="n">genre</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">genre</span>
+                        <span class="n">newBook</span><span class="o">.</span><span class="n">review</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="n">review</span>
+                        
+                        <span class="k">try</span><span class="p">?</span> <span class="k">self</span><span class="o">.</span><span class="n">moc</span><span class="o">.</span><span class="nf">save</span><span class="p">()</span>
+                        <span class="k">self</span><span class="o">.</span><span class="n">presentationMode</span><span class="o">.</span><span class="n">wrappedValue</span><span class="o">.</span><span class="nf">dismiss</span><span class="p">()</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">AddBookView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">AddBookView</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  DetailView.swift</span>
+<span class="c1">//  Bookworm</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">import</span> <span class="kt">CoreData</span>
+
+<span class="kd">struct</span> <span class="kt">DetailView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">managedObjectContext</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">moc</span>
+    <span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">presentationMode</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">presentationMode</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">showingDeleteAlert</span> <span class="o">=</span> <span class="kc">false</span>
+    
+    <span class="k">let</span> <span class="nv">book</span><span class="p">:</span> <span class="kt">Book</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">GeometryReader</span> <span class="p">{</span> <span class="n">geometry</span> <span class="k">in</span>
+            <span class="kt">VStack</span> <span class="p">{</span>
+                <span class="kt">ZStack</span><span class="p">(</span><span class="nv">alignment</span><span class="p">:</span> <span class="o">.</span><span class="n">bottomTrailing</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="kt">Image</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">genre</span> <span class="p">??</span> <span class="s">"Fantasy"</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">frame</span><span class="p">(</span><span class="nv">maxWidth</span><span class="p">:</span> <span class="n">geometry</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+                    
+                    <span class="kt">Text</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">genre</span><span class="p">?</span><span class="o">.</span><span class="nf">uppercased</span><span class="p">()</span> <span class="p">??</span> <span class="s">"FANTASY"</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">caption</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">fontWeight</span><span class="p">(</span><span class="o">.</span><span class="n">black</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">padding</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">foregroundColor</span><span class="p">(</span><span class="o">.</span><span class="n">white</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">background</span><span class="p">(</span><span class="kt">Color</span><span class="o">.</span><span class="n">black</span><span class="o">.</span><span class="nf">opacity</span><span class="p">(</span><span class="mf">0.7</span><span class="p">))</span>
+                        <span class="o">.</span><span class="nf">clipShape</span><span class="p">(</span><span class="kt">Capsule</span><span class="p">())</span>
+                        <span class="o">.</span><span class="nf">offset</span><span class="p">(</span><span class="nv">x</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="nv">y</span><span class="p">:</span> <span class="o">-</span><span class="mi">5</span><span class="p">)</span>
+                <span class="p">})</span>
+                
+                <span class="kt">Text</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">author</span> <span class="p">??</span> <span class="s">"Unknown author"</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">foregroundColor</span><span class="p">(</span><span class="o">.</span><span class="n">secondary</span><span class="p">)</span>
+                
+                <span class="kt">Text</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">review</span> <span class="p">??</span> <span class="s">"No review"</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">padding</span><span class="p">()</span>
+                
+                <span class="kt">RatingView</span><span class="p">(</span><span class="nv">rating</span><span class="p">:</span> <span class="o">.</span><span class="nf">constant</span><span class="p">(</span><span class="kt">Int</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">book</span><span class="o">.</span><span class="n">rating</span><span class="p">)))</span>
+                    <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">largeTitle</span><span class="p">)</span>
+                
+                <span class="kt">Spacer</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="kt">Text</span><span class="p">(</span><span class="n">book</span><span class="o">.</span><span class="n">title</span> <span class="p">??</span> <span class="s">"Unknown Book"</span><span class="p">),</span> <span class="nv">displayMode</span><span class="p">:</span> <span class="o">.</span><span class="n">inline</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">navigationBarItems</span><span class="p">(</span><span class="nv">trailing</span><span class="p">:</span> <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="p">{</span>
+            <span class="k">self</span><span class="o">.</span><span class="n">showingDeleteAlert</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="p">})</span> <span class="p">{</span>
+            <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"trash"</span><span class="p">)</span>
+        <span class="p">})</span>
+        <span class="o">.</span><span class="nf">alert</span><span class="p">(</span><span class="nv">isPresented</span><span class="p">:</span> <span class="err">$</span><span class="n">showingDeleteAlert</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kt">Alert</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Delete book"</span><span class="p">),</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Are you sure?"</span><span class="p">),</span> <span class="nv">primaryButton</span><span class="p">:</span> <span class="o">.</span><span class="nf">destructive</span><span class="p">(</span><span class="kt">Text</span><span class="p">(</span><span class="s">"Delete"</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">self</span><span class="o">.</span><span class="nf">deleteBook</span><span class="p">()</span>
+            <span class="p">},</span> <span class="nv">secondaryButton</span><span class="p">:</span> <span class="o">.</span><span class="nf">cancel</span><span class="p">())</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">deleteBook</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">moc</span><span class="o">.</span><span class="nf">delete</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+        
+        <span class="n">presentationMode</span><span class="o">.</span><span class="n">wrappedValue</span><span class="o">.</span><span class="nf">dismiss</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">DetailView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">moc</span> <span class="o">=</span> <span class="kt">NSManagedObjectContext</span><span class="p">(</span><span class="nv">concurrencyType</span><span class="p">:</span> <span class="o">.</span><span class="n">mainQueueConcurrencyType</span><span class="p">)</span>
+    
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">book</span> <span class="o">=</span> <span class="kt">Book</span><span class="p">(</span><span class="nv">context</span><span class="p">:</span> <span class="n">moc</span><span class="p">)</span>
+        <span class="n">book</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">"Test book"</span>
+        <span class="n">book</span><span class="o">.</span><span class="n">author</span> <span class="o">=</span> <span class="s">"Test author"</span>
+        <span class="n">book</span><span class="o">.</span><span class="n">genre</span> <span class="o">=</span> <span class="s">"Poetry"</span>
+        <span class="n">book</span><span class="o">.</span><span class="n">rating</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="n">book</span><span class="o">.</span><span class="n">review</span> <span class="o">=</span> <span class="s">"This is a great book."</span>
+        
+        <span class="k">return</span> <span class="kt">NavigationView</span> <span class="p">{</span>
+            <span class="kt">DetailView</span><span class="p">(</span><span class="nv">book</span><span class="p">:</span> <span class="n">book</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  RatingView.swift</span>
+<span class="c1">//  Bookworm</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">RatingView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@Binding</span> <span class="k">var</span> <span class="nv">rating</span><span class="p">:</span> <span class="kt">Int</span>
+    <span class="k">var</span> <span class="nv">label</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="k">var</span> <span class="nv">maximumRating</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">var</span> <span class="nv">offImage</span><span class="p">:</span> <span class="kt">Image</span><span class="p">?</span>
+    <span class="k">var</span> <span class="nv">onImage</span> <span class="o">=</span> <span class="kt">Image</span><span class="p">(</span><span class="nv">systemName</span><span class="p">:</span> <span class="s">"star.fill"</span><span class="p">)</span>
+    <span class="k">var</span> <span class="nv">offColor</span> <span class="o">=</span> <span class="kt">Color</span><span class="o">.</span><span class="n">gray</span>
+    <span class="k">var</span> <span class="nv">onColor</span> <span class="o">=</span> <span class="kt">Color</span><span class="o">.</span><span class="n">yellow</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">HStack</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="n">label</span><span class="o">.</span><span class="n">isEmpty</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+                <span class="kt">Text</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="p">}</span>
+            
+            <span class="kt">ForEach</span><span class="p">(</span><span class="mi">1</span><span class="o">..&lt;</span><span class="n">maximumRating</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="n">number</span> <span class="k">in</span>
+                <span class="k">self</span><span class="o">.</span><span class="nf">image</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">number</span><span class="p">)</span>
+                    <span class="o">.</span><span class="nf">foregroundColor</span><span class="p">(</span><span class="n">number</span> <span class="o">&gt;</span> <span class="k">self</span><span class="o">.</span><span class="n">rating</span> <span class="p">?</span> <span class="k">self</span><span class="o">.</span><span class="nv">offColor</span> <span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">onColor</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">onTapGesture</span> <span class="p">{</span>
+                        <span class="k">self</span><span class="o">.</span><span class="n">rating</span> <span class="o">=</span> <span class="n">number</span>
+                    <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">image</span><span class="p">(</span><span class="k">for</span> <span class="nv">number</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Image</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">&gt;</span> <span class="n">rating</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">offImage</span> <span class="p">??</span> <span class="n">onImage</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">onImage</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">RatingView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">RatingView</span><span class="p">(</span><span class="nv">rating</span><span class="p">:</span> <span class="o">.</span><span class="nf">constant</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  EmojiRatingView.swift</span>
+<span class="c1">//  Bookworm</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">EmojiRatingView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">rating</span><span class="p">:</span> <span class="kt">Int16</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="n">rating</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"1"</span><span class="p">)</span>
+        <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"2"</span><span class="p">)</span>
+        <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"3"</span><span class="p">)</span>
+        <span class="k">case</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"4"</span><span class="p">)</span>
+        <span class="k">default</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"5"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">EmojiRatingView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">EmojiRatingView</span><span class="p">(</span><span class="nv">rating</span><span class="p">:</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div><span class="meta"><time datetime="2020-11-02T00:00:00-05:00">November 2, 2020</time> &middot; <a href="/tag/swiftui">swiftui</a>, <a href="/tag/hackingwithswift">hackingwithswift</a></span></section></main></body></html>

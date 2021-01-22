@@ -1,0 +1,266 @@
+<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Jekyll v4.0.0" /><meta property="og:title" content="CupcakeCorner" /><meta property="og:locale" content="en_US" /><meta name="description" content="Build an app that sends and receives JSON from the internet" /><meta property="og:description" content="Build an app that sends and receives JSON from the internet" /><link rel="canonical" href="http://localhost:4000/swiftui/CupcakeCorner" /><meta property="og:url" content="http://localhost:4000/swiftui/CupcakeCorner" /><meta property="og:site_name" content="devai.b" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2020-11-01T00:00:00-04:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="CupcakeCorner" /><meta name="twitter:site" content="@Devaib" /><meta name="twitter:creator" content="@Devaib" /> <script type="application/ld+json"> {"@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/swiftui/CupcakeCorner"},"headline":"CupcakeCorner","url":"http://localhost:4000/swiftui/CupcakeCorner","description":"Build an app that sends and receives JSON from the internet","dateModified":"2020-11-01T00:00:00-04:00","datePublished":"2020-11-01T00:00:00-04:00","@context":"https://schema.org"}</script><title> CupcakeCorner - devai.b</title><link rel="shortcut icon" href="/favicon.png"><link rel="alternate" type="application/atom+xml" title="devai.b" href="/atom.xml"><link rel="alternate" type="application/json" title="devai.b" href="http://localhost:4000/feed.json" /><link rel="sitemap" type="application/xml" title="sitemap" href="/sitemap.xml" /><style> *,:after,:before{box-sizing:border-box;background-color:inherit;color:inherit;margin:0;padding:0}body{font-family:system-ui, sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.5;font-size:1rem;color:#16171a}nav ul{border-right:1px solid #edf2f7}a{color:#000;text-decoration-skip-ink:auto;text-decoration:underline}pre{margin:.5rem 0;padding:.5rem}.post p{margin:.5rem 0}.post h1,.post h2,.post h3,.post h4{margin:1rem 0}.post h2:first-child,.project h2:first-child,.photo h2:first-child{margin-top:0}.meta{margin:2rem 0}code,pre{background:#ecedee}code{padding:.1rem}pre code{border:none}pre{padding:1rem;overflow-x:auto}img{max-width:100%}hr{background:#000;height:1px;border:0}header{flex-basis:10rem;flex-grow:1;position:relative}header a{text-decoration:none}header li{margin-bottom:.2rem;text-align:right;margin-right:2rem}header a.active{font-weight:bold}header,section{padding:1rem}blockquote{font-style:italic;border-left:5px solid #ececec;padding-left:1rem}h1,h2,h3,h4,h5{line-height:1;margin:1rem 0;font-weight:600}section h1:first-child{margin-top:0}strong,b{font-weight:bold}.photos ul{list-style:none}.photos li{margin-bottom:1.5rem}.photo picture,.project picture{margin-bottom:0.5rem}.posts ul,header ul{list-style:none}.posts li{align-items:center;display:flex;justify-content:space-between;margin-bottom:.5rem}.posts li a,.posts li div,.projects li a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none}.posts li time,.projects li time{padding-left:1rem;white-space:nowrap;font-variant-numeric:tabular-nums}main{display:flex;flex-wrap:wrap;max-width:60rem;margin:2rem auto;padding:1rem}@media screen and (max-width: 45rem){header li{display:inline;margin-right:1rem}.logo{padding-bottom:1rem}header ul{border-bottom:1px solid #edf2f7;padding-bottom:2rem}nav ul{border-right:0px}.photos ul{margin-top:0.5rem}}section{flex-basis:0;flex-grow:999;min-width:70%;display:flex;flex-direction:column}figcaption{font-size:smaller}</style></head><body><main role="main"><header role="banner"> <!--<h1 class="logo">devai.b</h1>--><nav role="navigation"><ul><li><a href="/" >Writing</a></li><li><a href="/about" >About</a></li><li><a href="/search" >Search</a></li><li><a href="/atom.xml" >Rss</a></li></ul></nav></header><section class="post"><h2>CupcakeCorner</h2><h3 id="keywords">Keywords</h3><ul><li>URLSession.shared.dataTask</li><li>JSONEncoder/JSONDecoder</li><li>GeometryReader</li><li>Codable</li></ul><h3 id="keynotes">Keynotes</h3><ol><li>If a Swift struct is made up only of properties that conform to <code class="highlighter-rouge">Codable</code>, the whole struct itself can conform to <code class="highlighter-rouge">Codable</code></li><li>Grand Central Dispatch is Apple’s framework for running work across multiple threads</li><li>We can create an enum to give a type some specific coding keys, and name the enum whatever we want</li><li>Swifts arrays use generics and we can’t make an untyped array</li><li>The <code class="highlighter-rouge">@Published</code> property wrapper places our properties inside a <code class="highlighter-rouge">Published</code> struct. Behind the scenes, this is actually similar to how optionals work</li><li>Creating a <code class="highlighter-rouge">URL</code> from a string returns an optional URL</li><li>Strings, integers, and Booleans already conform to <code class="highlighter-rouge">Codable</code></li><li><code class="highlighter-rouge">URLRequest</code> doesn’t fetch anything; it just describes how data should be fetched</li><li>The <code class="highlighter-rouge">CodingKey</code> protocol lets us list the properties we want to archive and unarchive as <code class="highlighter-rouge">enum</code> cases</li><li>Structs cannot be used with <code class="highlighter-rouge">@ObservedObject</code></li><li>We should always change our user interface on the main thread</li><li>It’s common to use the shared property of <code class="highlighter-rouge">URLSession</code> rather than creating a new session ourselves</li><li>If the properties already have default values, you don’t need to include them in the initializer</li><li>When a <code class="highlighter-rouge">URLSession</code> data task completes, it might send us data or an error, but not both</li></ol><h3 id="code">Code</h3><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  ContentView.swift</span>
+<span class="c1">//  CupcakeCorner</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="k">var</span> <span class="nv">order</span> <span class="o">=</span> <span class="kt">Order</span><span class="p">()</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">NavigationView</span> <span class="p">{</span>
+            <span class="kt">Form</span> <span class="p">{</span>
+                <span class="kt">Section</span> <span class="p">{</span>
+                    <span class="kt">Picker</span><span class="p">(</span><span class="s">"Select your cake type"</span><span class="p">,</span> <span class="nv">selection</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">type</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kt">ForEach</span><span class="p">(</span><span class="mi">0</span><span class="o">..&lt;</span><span class="kt">Order</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">count</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="kt">Text</span><span class="p">(</span><span class="kt">Order</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="nv">$0</span><span class="p">])</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                    
+                    <span class="kt">Stepper</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="nv">in</span> <span class="p">:</span> <span class="mi">3</span><span class="o">...</span><span class="mi">20</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kt">Text</span><span class="p">(</span><span class="s">"Number of cakes: </span><span class="se">\(</span><span class="n">order</span><span class="o">.</span><span class="n">quantity</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                
+                <span class="kt">Section</span> <span class="p">{</span>
+                    <span class="kt">Toggle</span><span class="p">(</span><span class="nv">isOn</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">specialRequestEnabled</span><span class="o">.</span><span class="nf">animation</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="kt">Text</span><span class="p">(</span><span class="s">"Any special requests?"</span><span class="p">)</span>
+                    <span class="p">}</span>
+                    
+                    <span class="k">if</span> <span class="n">order</span><span class="o">.</span><span class="n">specialRequestEnabled</span> <span class="p">{</span>
+                        <span class="kt">Toggle</span><span class="p">(</span><span class="nv">isOn</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">extraFrosting</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="kt">Text</span><span class="p">(</span><span class="s">"Add extra frosting"</span><span class="p">)</span>
+                        <span class="p">}</span>
+                        
+                        <span class="kt">Toggle</span><span class="p">(</span><span class="nv">isOn</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">addSprinkles</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="kt">Text</span><span class="p">(</span><span class="s">"Add extra sprinkels"</span><span class="p">)</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                
+                <span class="kt">Section</span> <span class="p">{</span>
+                    <span class="kt">NavigationLink</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">AddressView</span><span class="p">(</span><span class="nv">order</span><span class="p">:</span> <span class="n">order</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="kt">Text</span><span class="p">(</span><span class="s">"Delivery details"</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="s">"Cupcake Corner"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">ContentView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">ContentView</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  AddressView.swift</span>
+<span class="c1">//  CupcakeCorner</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">AddressView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="k">var</span> <span class="nv">order</span><span class="p">:</span> <span class="kt">Order</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">Form</span> <span class="p">{</span>
+            <span class="kt">Section</span> <span class="p">{</span>
+                <span class="kt">TextField</span><span class="p">(</span><span class="s">"Name"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="kt">TextField</span><span class="p">(</span><span class="s">"Street Address"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">streetAddress</span><span class="p">)</span>
+                <span class="kt">TextField</span><span class="p">(</span><span class="s">"City"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+                <span class="kt">TextField</span><span class="p">(</span><span class="s">"Zip"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">order</span><span class="o">.</span><span class="n">zip</span><span class="p">)</span>
+            <span class="p">}</span>
+            
+            <span class="kt">Section</span> <span class="p">{</span>
+                <span class="kt">NavigationLink</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="kt">CheckoutView</span><span class="p">(</span><span class="nv">order</span><span class="p">:</span> <span class="n">order</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="kt">Text</span><span class="p">(</span><span class="s">"Check out"</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="o">.</span><span class="nf">disabled</span><span class="p">(</span><span class="n">order</span><span class="o">.</span><span class="n">hasValidAddress</span> <span class="o">==</span> <span class="kc">false</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="s">"Delivery details"</span><span class="p">,</span> <span class="nv">displayMode</span><span class="p">:</span> <span class="o">.</span><span class="n">inline</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">AddressView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">AddressView</span><span class="p">(</span><span class="nv">order</span><span class="p">:</span> <span class="kt">Order</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  CheckoutView.swift</span>
+<span class="c1">//  CupcakeCorner</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">SwiftUI</span>
+
+<span class="kd">struct</span> <span class="kt">CheckoutView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@ObservedObject</span> <span class="k">var</span> <span class="nv">order</span><span class="p">:</span> <span class="kt">Order</span>
+    
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">confirmationMessage</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">showingConfirmation</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">orderPlaced</span> <span class="o">=</span> <span class="kc">false</span>
+    
+    <span class="k">var</span> <span class="nv">alertTitle</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">orderPlaced</span> <span class="p">?</span> <span class="s">"Thank you!"</span> <span class="p">:</span> <span class="s">"Failed to send order"</span>
+    <span class="p">}</span>
+    <span class="k">var</span> <span class="nv">alertMessage</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">orderPlaced</span> <span class="p">?</span> <span class="nv">confirmationMessage</span> <span class="p">:</span> <span class="s">"Please try again"</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">placeOrder</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">encoded</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="kt">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">order</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">print</span><span class="p">(</span><span class="s">"Failed to encode order"</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="p">}</span>
+        
+        <span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="kt">URL</span><span class="p">(</span><span class="nv">string</span><span class="p">:</span> <span class="s">"https://reqres.in/api/cupcakes"</span><span class="p">)</span><span class="o">!</span>
+        <span class="k">var</span> <span class="nv">request</span> <span class="o">=</span> <span class="kt">URLRequest</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="nf">setValue</span><span class="p">(</span><span class="s">"application/json"</span><span class="p">,</span> <span class="nv">forHTTPHeaderField</span><span class="p">:</span> <span class="s">"Content-Type"</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">httpMethod</span> <span class="o">=</span> <span class="s">"POST"</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">httpBody</span> <span class="o">=</span> <span class="n">encoded</span>
+        
+        <span class="kt">URLSession</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="nf">dataTask</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">request</span><span class="p">)</span> <span class="p">{</span> <span class="n">data</span><span class="p">,</span> <span class="n">response</span><span class="p">,</span> <span class="n">error</span> <span class="k">in</span>
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="n">data</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">print</span><span class="p">(</span><span class="s">"No data in response: </span><span class="se">\(</span><span class="n">error</span><span class="p">?</span><span class="o">.</span><span class="n">localizedDescription</span> <span class="p">??</span> <span class="s">"Unknow error"</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">showingConfirmation</span> <span class="o">=</span> <span class="kc">true</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="k">let</span> <span class="nv">decodedOrder</span> <span class="o">=</span> <span class="k">try</span><span class="p">?</span> <span class="kt">JSONDecoder</span><span class="p">()</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Order</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">confirmationMessage</span> <span class="o">=</span> <span class="s">"Your order for </span><span class="se">\(</span><span class="n">decodedOrder</span><span class="o">.</span><span class="n">quantity</span><span class="se">)</span><span class="s">x </span><span class="se">\(</span><span class="kt">Order</span><span class="o">.</span><span class="n">types</span><span class="p">[</span><span class="n">decodedOrder</span><span class="o">.</span><span class="n">type</span><span class="p">]</span><span class="o">.</span><span class="nf">lowercased</span><span class="p">()</span><span class="se">)</span><span class="s"> cupcakes is on its way!"</span>
+                <span class="k">self</span><span class="o">.</span><span class="n">orderPlaced</span> <span class="o">=</span> <span class="kc">true</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nf">print</span><span class="p">(</span><span class="s">"Invalid response from server"</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">self</span><span class="o">.</span><span class="n">showingConfirmation</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="p">}</span><span class="o">.</span><span class="nf">resume</span><span class="p">()</span>
+        
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">GeometryReader</span> <span class="p">{</span> <span class="n">geo</span> <span class="k">in</span>
+            <span class="kt">ScrollView</span> <span class="p">{</span>
+                <span class="kt">VStack</span> <span class="p">{</span>
+                    <span class="kt">Image</span><span class="p">(</span><span class="s">"cupcakes"</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">resizable</span><span class="p">()</span>
+                        <span class="o">.</span><span class="nf">scaledToFit</span><span class="p">()</span>
+                        <span class="o">.</span><span class="nf">frame</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="n">geo</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+                    
+                    <span class="kt">Text</span><span class="p">(</span><span class="s">"Your total is $</span><span class="se">\(</span><span class="n">order</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span> <span class="nv">specifier</span><span class="p">:</span> <span class="s">"%.2f"</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+                        <span class="o">.</span><span class="nf">font</span><span class="p">(</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+                    
+                    <span class="kt">Button</span><span class="p">(</span><span class="s">"Place Order"</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nf">placeOrder</span><span class="p">()</span>
+                    <span class="p">}</span>
+                    <span class="o">.</span><span class="nf">padding</span><span class="p">()</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="o">.</span><span class="nf">navigationBarTitle</span><span class="p">(</span><span class="s">"Check out"</span><span class="p">,</span> <span class="nv">displayMode</span><span class="p">:</span> <span class="o">.</span><span class="n">inline</span><span class="p">)</span>
+        <span class="o">.</span><span class="nf">alert</span><span class="p">(</span><span class="nv">isPresented</span><span class="p">:</span> <span class="err">$</span><span class="n">showingConfirmation</span><span class="p">,</span> <span class="nv">content</span><span class="p">:</span> <span class="p">{</span>
+            <span class="kt">Alert</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt">Text</span><span class="p">(</span><span class="n">alertTitle</span><span class="p">),</span> <span class="nv">message</span><span class="p">:</span> <span class="kt">Text</span><span class="p">(</span><span class="n">alertMessage</span><span class="p">),</span> <span class="nv">dismissButton</span><span class="p">:</span> <span class="o">.</span><span class="nf">default</span><span class="p">(</span><span class="kt">Text</span><span class="p">(</span><span class="s">"OK"</span><span class="p">)))</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">CheckoutView_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="kd">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">CheckoutView</span><span class="p">(</span><span class="nv">order</span><span class="p">:</span> <span class="kt">Order</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div><div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//</span>
+<span class="c1">//  Order.swift</span>
+<span class="c1">//  CupcakeCorner</span>
+<span class="c1">//</span>
+
+<span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">class</span> <span class="kt">Order</span><span class="p">:</span> <span class="kt">ObservableObject</span><span class="p">,</span> <span class="kt">Codable</span> <span class="p">{</span>
+    <span class="kd">static</span> <span class="k">let</span> <span class="nv">types</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Vanilla"</span><span class="p">,</span> <span class="s">"Strawberry"</span><span class="p">,</span> <span class="s">"Chocolate"</span><span class="p">,</span> <span class="s">"Rainbow"</span><span class="p">]</span>
+    
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">type</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">quantity</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">extraFrosting</span> <span class="o">=</span> <span class="kc">false</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">addSprinkles</span> <span class="o">=</span> <span class="kc">false</span>
+    
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">name</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">streetAddress</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">city</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">zip</span> <span class="o">=</span> <span class="s">""</span>
+    
+    <span class="kd">@Published</span> <span class="k">var</span> <span class="nv">specialRequestEnabled</span> <span class="o">=</span> <span class="kc">false</span> <span class="p">{</span>
+        <span class="k">didSet</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="n">specialRequestEnabled</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+                <span class="n">extraFrosting</span> <span class="o">=</span> <span class="kc">false</span>
+                <span class="n">addSprinkles</span> <span class="o">=</span> <span class="kc">false</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">hasValidAddress</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="nf">trimmingCharacters</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">.</span><span class="n">whitespaces</span><span class="p">)</span><span class="o">.</span><span class="n">isEmpty</span> <span class="o">||</span>
+            <span class="n">streetAddress</span><span class="o">.</span><span class="nf">trimmingCharacters</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">.</span><span class="n">whitespaces</span><span class="p">)</span><span class="o">.</span><span class="n">isEmpty</span> <span class="o">||</span>
+            <span class="n">city</span><span class="o">.</span><span class="nf">trimmingCharacters</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">.</span><span class="n">whitespaces</span><span class="p">)</span><span class="o">.</span><span class="n">isEmpty</span> <span class="o">||</span>
+            <span class="n">zip</span><span class="o">.</span><span class="nf">trimmingCharacters</span><span class="p">(</span><span class="nv">in</span><span class="p">:</span> <span class="o">.</span><span class="n">whitespaces</span><span class="p">)</span><span class="o">.</span><span class="n">isEmpty</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+    
+    <span class="k">var</span> <span class="nv">cost</span><span class="p">:</span> <span class="kt">Double</span> <span class="p">{</span>
+        <span class="c1">// $2 per cake</span>
+        <span class="k">var</span> <span class="nv">cost</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="c1">// complicated cakes cost more</span>
+        <span class="n">cost</span> <span class="o">+=</span> <span class="p">(</span><span class="kt">Double</span><span class="p">(</span><span class="n">type</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1">// $1/cake for extra frosting</span>
+        <span class="k">if</span> <span class="n">extraFrosting</span> <span class="p">{</span>
+            <span class="n">cost</span> <span class="o">+=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// $0.50/cake for sprinkles</span>
+        <span class="k">if</span> <span class="n">addSprinkles</span> <span class="p">{</span>
+            <span class="n">cost</span> <span class="o">+=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">cost</span>
+    <span class="p">}</span>
+    
+    <span class="kd">enum</span> <span class="kt">CodingKeys</span><span class="p">:</span> <span class="kt">CodingKey</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="n">type</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">extraFrosting</span><span class="p">,</span> <span class="n">addSprinkles</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">streetAddress</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">zip</span>
+    <span class="p">}</span>
+    
+    <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">to</span> <span class="nv">encoder</span><span class="p">:</span> <span class="kt">Encoder</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">var</span> <span class="nv">container</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="nf">container</span><span class="p">(</span><span class="nv">keyedBy</span><span class="p">:</span> <span class="kt">CodingKeys</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+        
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">extraFrosting</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">extraFrosting</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">addSprinkles</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">addSprinkles</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">streetAddress</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">streetAddress</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">city</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">encode</span><span class="p">(</span><span class="n">zip</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">zip</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="kd">required</span> <span class="nf">init</span><span class="p">(</span><span class="n">from</span> <span class="nv">decoder</span><span class="p">:</span> <span class="kt">Decoder</span><span class="p">)</span> <span class="k">throws</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">container</span> <span class="o">=</span> <span class="k">try</span> <span class="n">decoder</span><span class="o">.</span><span class="nf">container</span><span class="p">(</span><span class="nv">keyedBy</span><span class="p">:</span> <span class="kt">CodingKeys</span><span class="o">.</span><span class="k">self</span><span class="p">)</span>
+        
+        <span class="n">type</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="n">quantity</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Int</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">quantity</span><span class="p">)</span>
+        <span class="n">extraFrosting</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Bool</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">extraFrosting</span><span class="p">)</span>
+        <span class="n">addSprinkles</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">Bool</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">addSprinkles</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">streetAddress</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">streetAddress</span><span class="p">)</span>
+        <span class="n">city</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="n">zip</span> <span class="o">=</span> <span class="k">try</span> <span class="n">container</span><span class="o">.</span><span class="nf">decode</span><span class="p">(</span><span class="kt">String</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">forKey</span><span class="p">:</span> <span class="o">.</span><span class="n">zip</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="nf">init</span><span class="p">()</span> <span class="p">{}</span>
+    
+<span class="p">}</span>
+</code></pre></div></div><span class="meta"><time datetime="2020-11-01T00:00:00-04:00">November 1, 2020</time> &middot; <a href="/tag/swiftui">swiftui</a>, <a href="/tag/hackingwithswift">hackingwithswift</a></span></section></main></body></html>

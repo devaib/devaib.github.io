@@ -2,6 +2,116 @@
   
     {
 
+      "title"    : "Digital Ocean Mobile",
+      "url"      : "/digitaloceanmobile",
+      "category" : "",
+      "tags"     : "digitaloceanmobile",
+      "date"     : "2021-01-21 00:00:00 -0500",
+      "description" : "Digital Ocean Management Tool on iOS."
+
+    } ,
+  
+    {
+
+      "title"    : "Weak self",
+      "url"      : "/swift/WeakSelf",
+      "category" : "",
+      "tags"     : "swift, future, promise",
+      "date"     : "2020-12-21 00:00:00 -0500",
+      "description" : "Understand weak self."
+
+    } ,
+  
+    {
+
+      "title"    : "HotProspects",
+      "url"      : "/swiftui/HotProspects",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-12-06 00:00:00 -0500",
+      "description" : "Build an app for conferences with tabs, context menus, and more."
+
+    } ,
+  
+    {
+
+      "title"    : "Underscores in Python",
+      "url"      : "/python/UnderscoresInPython",
+      "category" : "",
+      "tags"     : "python, underscore, inheritance, name mangling",
+      "date"     : "2020-12-01 00:00:00 -0500",
+      "description" : "Underscores in Python."
+
+    } ,
+  
+    {
+
+      "title"    : "BucketList",
+      "url"      : "/swiftui/BucketList",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-11-14 00:00:00 -0500",
+      "description" : "Embed maps and make network calls in this life goals app"
+
+    } ,
+  
+    {
+
+      "title"    : "Instafilter",
+      "url"      : "/swiftui/Instafilter",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-11-10 00:00:00 -0500",
+      "description" : "Learn to link SwiftUI, UIKit, and Core Image in one app"
+
+    } ,
+  
+    {
+
+      "title"    : "CoreData",
+      "url"      : "/swiftui/CoreData",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-11-04 00:00:00 -0500",
+      "description" : "Take an in-depth tour of how SwiftUI and Core Data work"
+
+    } ,
+  
+    {
+
+      "title"    : "Bookworm",
+      "url"      : "/swiftui/Bookworm",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-11-02 00:00:00 -0500",
+      "description" : "Use Core Data to build an app that tracks books you like"
+
+    } ,
+  
+    {
+
+      "title"    : "CupcakeCorner",
+      "url"      : "/swiftui/CupcakeCorner",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-11-01 00:00:00 -0400",
+      "description" : "Build an app that sends and receives JSON from the internet"
+
+    } ,
+  
+    {
+
+      "title"    : "Moonshot",
+      "url"      : "/swiftui/Moonshot",
+      "category" : "",
+      "tags"     : "swiftui, hackingwithswift",
+      "date"     : "2020-10-21 00:00:00 -0400",
+      "description" : "Teach users about space history with scroll views, Codable, and more"
+
+    } ,
+  
+    {
+
       "title"    : "iExpense",
       "url"      : "/swiftui/iExpense",
       "category" : "",
