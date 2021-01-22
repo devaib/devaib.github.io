@@ -3,7 +3,7 @@ layout: post
 title: Digital Ocean Mobile
 description: Digital Ocean Management Tool on iOS.
 summary: Digital Ocean Management Tool on iOS.
-tags: [digitaloceanmobiel]
+tags: [digitaloceanmobile]
 permalink: "/digitaloceanmobile"
 ---
 
