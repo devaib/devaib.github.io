@@ -10,5 +10,8 @@ permalink: "/digitaloceanmobile"
 A Digital Ocean Management app on iOS using API v2.
 
 <script type="text/javascript">
-alert("Hello, it works!")
+function codeAddress() {
+    alert("Hello, it works!")
+}
+window.onload = codeAddress;
 </script>
