@@ -17,7 +17,7 @@
             "title": "Digital Ocean Mobile",
             "summary": "Digital Ocean Management Tool on iOS.",
             "content_text": "A Digital Ocean Management app on iOS using API v2.",
-            "content_html": "<p>A Digital Ocean Management app on iOS using API v2.</p><script type=\"text/javascript\">function redirectToDigitalOceanMobile() {    var location = document.location;    console.log(location);    var url = location.href    var redictedURL = url.replace(\"https://devaib.github.io/digitaloceanmobile:authenticate\", \"digitaloceanmobile:authenticate\");    console.log(redictedURL);    window.location.replace(redictedURL);}window.onload = redirectToDigitalOceanMobile;</script>",
+            "content_html": "<p>A Digital Ocean Management app on iOS using API v2.</p><script type=\"text/javascript\">function redirectToDigitalOceanMobile() {    var location = document.location;    console.log(location);    var url = location.href;    var redictedURL = url.replace(\"https://devaib.github.io/digitaloceanmobile:authenticate\", \"digitaloceanmobile:authenticate\");    console.log(redictedURL);    window.location.replace(redictedURL);}window.onload = redirectToDigitalOceanMobile;</script>",
             "url": "http://localhost:4000/digitaloceanmobile",
             
             
