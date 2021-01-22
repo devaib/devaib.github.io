@@ -8,3 +8,7 @@ permalink: "/digitaloceanmobile"
 ---
 
 A Digital Ocean Management app on iOS using API v2.
+
+<script type="text/javascript">
+alert("Hello, it works!")
+</script>
