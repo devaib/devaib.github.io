@@ -15,7 +15,7 @@ function redirectToDigitalOceanMobile() {
     console.log(location);
 
     var url = location.href;
-    var redictedURL = url.replace("https://devaib.github.io/digitaloceanmobile:authenticate", "digitaloceanmobile:authenticate");
+    var redictedURL = url.replace("https://devaib.github.io/digitaloceanmobile", "digitaloceanmobile:authenticate");
     console.log(redictedURL);
 
     window.location.replace(redictedURL);

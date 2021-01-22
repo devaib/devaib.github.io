@@ -4,7 +4,7 @@
  <title>devai.b</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2021-01-21T23:51:54-05:00</updated>
+ <updated>2021-01-22T00:02:16-05:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name></name>
@@ -25,7 +25,7 @@ function redirectToDigitalOceanMobile() {
     console.log(location);
 
     var url = location.href;
-    var redictedURL = url.replace(&quot;https://devaib.github.io/digitaloceanmobile:authenticate&quot;, &quot;digitaloceanmobile:authenticate&quot;);
+    var redictedURL = url.replace(&quot;https://devaib.github.io/digitaloceanmobile&quot;, &quot;digitaloceanmobile:authenticate&quot;);
     console.log(redictedURL);
 
     window.location.replace(redictedURL);
