@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Digital Ocean Mobile
+title: Digital Ocean Mobile Redict Test
 description: Digital Ocean Management Tool on iOS.
 summary: Digital Ocean Management Tool on iOS.
 tags: [digitaloceanmobile]
