@@ -4,13 +4,111 @@
  <title>devai.b</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2021-02-21T16:48:38-05:00</updated>
+ <updated>2021-02-28T22:51:19-05:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name></name>
    <email></email>
  </author>
 
+ 
+ <entry>
+   <title>Deploy Django with Apache and mod_wsgi</title>
+   <link href="http://localhost:4000/python/DeployDjangoWithApacheWSGI"/>
+   <updated>2021-02-28T00:00:00-05:00</updated>
+   <id>http://localhost:4000/python/Deploy-Django-With-Apache-WSGI</id>
+   <content type="html">&lt;h3 id=&quot;reference&quot;&gt;Reference&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/modwsgi/&quot;&gt;How to use Django with Apache and mod_wsgi - django documentation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://modwsgi.readthedocs.io/en/develop/user-guides/quick-installation-guide.html&quot;&gt;Quick Installation Guide - mod_wsgi&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Sa_kQheCnds&amp;amp;ab_channel=CoreySchafer&quot;&gt;Python Django Tutorial: Deploying Your Application (Option #1) - Deploy to a Linux Server&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;main-steps&quot;&gt;Main Steps&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Ip Address and SSH Credentials&lt;/li&gt;
+  &lt;li&gt;Root Connection to the Server&lt;/li&gt;
+  &lt;li&gt;Setting Host Name
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;hostnamectl set-hostname django-server&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Setting Host File
+    &lt;ul&gt;
+      &lt;li&gt;/etc/hosts -&amp;gt; “&lt;ip&gt; django-server&quot;&lt;/ip&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Adding Limited User&lt;/li&gt;
+  &lt;li&gt;Setting Up SSH Key Based Authentication&lt;/li&gt;
+  &lt;li&gt;Forbiding Root Login &amp;amp; Password Authentication&lt;/li&gt;
+  &lt;li&gt;Setting Up a Firewall
+    &lt;ul&gt;
+      &lt;li&gt;ufw&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Putting Django Application on Webserver&lt;/li&gt;
+  &lt;li&gt;Generating requirements.txt File&lt;/li&gt;
+  &lt;li&gt;Copying Django Application on to the Webserver&lt;/li&gt;
+  &lt;li&gt;Creating Virtual Environment on the Server&lt;/li&gt;
+  &lt;li&gt;Installing Dependencies&lt;/li&gt;
+  &lt;li&gt;Changing Django Settings for Testing the Application on Django Server&lt;/li&gt;
+  &lt;li&gt;Collecting Static Files
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;python manage.py collectstatic&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Testing Application&lt;/li&gt;
+  &lt;li&gt;Installing Apache &amp;amp; ModWSGI
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo apt install apache2&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;build mod_wsgi source code(the libapache2-mod-wsgi-py3 lib is outdated)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Configuring Apache Webserver
+    &lt;ul&gt;
+      &lt;li&gt;https://github.com/CoreyMSchafer/code_snippets/blob/master/Django_Blog/snippets/django_project.conf&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Enabling Site Through Apache
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo a2ensite django_project&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo a2dissite 000-default.conf&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Setting Up File Permissions
+    &lt;ul&gt;
+      &lt;li&gt;project directory, db files&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Creating Configuration File for Hiding Sensitive Information&lt;/li&gt;
+  &lt;li&gt;Updating Project Settings File&lt;/li&gt;
+  &lt;li&gt;Allowing http Traffic
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo ufw allow http/tcp&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Restarting the Server &amp;amp; Running the Site
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo service apache2 restart&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;additional-apache-configuration&quot;&gt;Additional Apache Configuration&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# /etc/apache2/apache2.conf
+
+LoadFile /&amp;lt;path&amp;gt;/&amp;lt;to&amp;gt;/miniconda3/envs/django/lib/libpython3.8.so.1.0
+LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so
+
+WSGIPythonHome /&amp;lt;path&amp;gt;/&amp;lt;to&amp;gt;/miniconda3/envs/django
+WSGIPythonPath /&amp;lt;path&amp;gt;/&amp;lt;to&amp;gt;/&amp;lt;project&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Grand Central Dispatch</title>
@@ -247,8 +345,8 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;before
-2328941
 after
+2328941
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;async(execute:)&lt;/code&gt; method returns immediately. It submits the block of work to the global dispatch queue and returns control to the thread from which the &lt;code class=&quot;highlighter-rouge&quot;&gt;async(execute:)&lt;/code&gt; method is invoked.&lt;/p&gt;

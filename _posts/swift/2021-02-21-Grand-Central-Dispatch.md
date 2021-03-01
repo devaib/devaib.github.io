@@ -236,8 +236,8 @@ print("after")
 
 ```
 before
-2328941
 after
+2328941
 ```
 
 The `async(execute:)` method returns immediately. It submits the block of work to the global dispatch queue and returns control to the thread from which the `async(execute:)` method is invoked.

@@ -2,6 +2,17 @@
   
     {
 
+      "title"    : "Deploy Django with Apache and mod_wsgi",
+      "url"      : "/python/DeployDjangoWithApacheWSGI",
+      "category" : "",
+      "tags"     : "django, apache, mod_wsgi, deploy, python",
+      "date"     : "2021-02-28 00:00:00 -0500",
+      "description" : "Deploy Django with Apache and mod_wsgi."
+
+    } ,
+  
+    {
+
       "title"    : "Grand Central Dispatch",
       "url"      : "/swift/GrandCentralDispatch",
       "category" : "",
